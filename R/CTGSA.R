@@ -20,7 +20,7 @@
 #' CTGSA( x = x, y = y, out.type="stat", percentile.type = "all")
 #'
 #'
-#' require(mnormt)
+#' reuqire(mnormt)
 #' x <- rbind(rmnorm(50, rep(0, 5), diag(5) ),
 #'            rmnorm(50, rep(0, 5), outer(1:5, 1:5, function(i, j) 0.6^abs(i-j) ) ))
 #' y <- rep(0:1, each=50)
@@ -34,8 +34,10 @@ CTGSA <- function( x, y, out.type=c("stat", "pvalue"), percentile.type=c("case-c
 
     if( !is.matrix(x) ) stop("X must be a matrix")
     if( !identical( nrow(x), length(y) ) ) stop("X and y must be a same length")
-    if( percentile.type=="user-defined" & is.null(percentile.user) ) stop("A user-defined percentile should be entered.")
-    if( percentile.user>1 | percentile.user<0 ) stop("A user-defined percentile should be in [0, 1].")
+    if( percentile.type=="user-defined" ){
+        if( is.null(percentile.user) ) stop("A user-defined percentile should be entered.")
+        if( percentile.user>1 | percentile.user<0 ) stop("A user-defined percentile should be in [0, 1].")
+    }
     if( out.type=="pvalue" & is.null(nperm) ){
         warning("The number of permuations was set to be 1000.")
         nperm <- 1000
